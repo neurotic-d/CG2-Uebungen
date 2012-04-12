@@ -2,8 +2,8 @@ package raytracer;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import shapes.IShape;
-import shapes.Sphere;
 
 /**
  * Stellt eine Szene mit ihren Objekten dar.

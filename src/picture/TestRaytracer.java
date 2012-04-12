@@ -47,7 +47,7 @@ public class TestRaytracer {
         Plane p5 = new Plane(new Vector(0,0,-700), new Vector(0,0,1));
         p5.getMaterial().setColor(new Color(0f, 0f, 0f));
         
-        AxisAlignedBox aab = new AxisAlignedBox(new Vector(-20,-40,-400), new Vector(100,100,-500));
+        AxisAlignedBox aab = new AxisAlignedBox(new Vector(-20,-40,-500), new Vector(100,100,-400));
         aab.getMaterial().setColor(new Color(1f,1f,1f));
         
         scene.addShapeToScene(aab);

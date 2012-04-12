@@ -70,28 +70,34 @@ public class AxisAlignedBox extends AbstractShape{
          * ----------------------------------
          * --------TODO----------------------
          * 
-         * Diese normalen Stimmen nur fÃ¼r die aktuell vorgegeben Kamera
-         * MÃ¶glichkeit fÃ¼r allgemeinere Form finden.
+         * Diese normalen Stimmen nur für die aktuell vorgegeben Kamera
+         * Möglichkeit für allgemeinere Form finden.
          * 
          * ----------------------------------
          * ----------------------------------
          * 
-         * 6 Seiten: Pi: ni * x - di = 0
+         * 6 Seiten: P: n * x - d = 0
+         * 
+         * d = n*x0
          * 
          * Algorithmus (Woo):
          * finde die 3 Ebenen ,deren Normalen in die Richtung des Ursprungs
          * des Strahls, zeigen.
          * 
-         * => Vorzeichen der Komponenten von ray.direction mÃ¼ssen umgedreht werden
-         * => Vorne, Unten, Links == -
-         * => Hinten, Oben, Rechts == +
+         * => Vorzeichen der Komponenten von ray.direction müssen umgedreht werden
+         * => Vorzeichen der ray.direction kompontente:
+         * => Hinten, Unten, Links == -
+         * => Vorne, Oben, Rechts == +
+         * 
+         * (Achtung Vorne/Hinten sind bei der Sicht nach negativ Z getauscht)
+         * (d.h. die ebene die am weitesten entfernt ist ist vorne)
          * 
          * Parallel zur X-Achse: Vorne/Hinten
          * Parallel zur Y-Achse: Links/Rechts
          * Parallel zur Z-Achse: Oben/Unten
          * 
-         * Vorne: {0,0,-1} * x - {0,0,1}*x0 = 0
-         * Hinten: {0,0,1} * x - {0,0,-1}*x0 = 0
+         * Vorne: {0,0,1} * x - {0,0,1}*x0 = 0
+         * Hinten: {0,0,-1} * x - {0,0,-1}*x0 = 0
          * Links: {-1,0,0} * x - {-1,0,0}*x0 = 0
          * Rechts: {1,0,0} * x - {1,0,0}*x0 = 0
          * Oben: {0,1,0} * x - {0,1,0}*x0 = 0
@@ -103,7 +109,7 @@ public class AxisAlignedBox extends AbstractShape{
         Plane parallelX, parallelY, parallelZ;
         Vector rayDirection = ray.getNormalizedDirection();
         
-        parallelX = rayDirection.z < 0 ? new Plane(this.pMin, new Vector(0,0,1)) : new Plane(this.pMax, new Vector(0,0,-1));
+        parallelX = rayDirection.z > 0 ? new Plane(this.pMin, new Vector(0,0,-1)) : new Plane(this.pMax, new Vector(0,0,1));
         parallelY = rayDirection.x > 0 ? new Plane(this.pMin, new Vector(-1,0,0)) : new Plane(this.pMax, new Vector(1,0,0));
         parallelZ = rayDirection.y > 0 ? new Plane(this.pMin, new Vector(0,-1,0)) : new Plane(this.pMax, new Vector(0,1,0));
         
@@ -116,8 +122,8 @@ public class AxisAlignedBox extends AbstractShape{
         for(Hit h: hits){
             Vector hitPoint = ray.getPointAt(h.getFactorForHitPoint());
             
-            if(hitPoint.x >= this.pMin.x && hitPoint.y >= this.pMin.y && hitPoint.z <= this.pMin.z &&
-               hitPoint.x <= this.pMax.x && hitPoint.y <= this.pMax.y && hitPoint.z >= this.pMax.z){
+            if(hitPoint.x >= this.pMin.x && hitPoint.y >= this.pMin.y && hitPoint.z >= this.pMin.z &&
+               hitPoint.x <= this.pMax.x && hitPoint.y <= this.pMax.y && hitPoint.z <= this.pMax.z){
                 
                 if(shapeHit == null){
                     shapeHit = h;

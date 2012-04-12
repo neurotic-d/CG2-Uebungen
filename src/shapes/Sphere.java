@@ -1,9 +1,8 @@
 package shapes;
 
-import raytracer.Ray;
-import java.util.ArrayList;
 import material.Material;
 import raytracer.Hit;
+import raytracer.Ray;
 import vecmath.Color;
 import vecmath.Vector;
 
