@@ -4,18 +4,36 @@ import material.Material;
 
 /**
  * Stellt eine abstrakte Form dar.
- * 
- * @author Bruno Kirschner
  */
 public abstract class AbstractShape implements IShape{
 
-    // Material der Form
+    /**
+     * #################################
+     *            Attribute
+     * #################################
+     */
+    
+    /**
+     * Das Material der Form.
+     */
     private Material material;
 
+    /**
+     * #################################
+     *      überschriebene Methoden
+     * #################################
+     */
+    
     @Override
     public Material getMaterial() {
         return this.material;
     }
+    
+    /**
+     * #################################
+     *       öffentliche Methoden
+     * #################################
+     */
     
     public void setMaterial(final Material material){
         this.material = material;

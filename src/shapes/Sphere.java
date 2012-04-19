@@ -8,23 +8,50 @@ import vecmath.Vector;
 
 /**
  * Stellt eine Kugel dar.
- * 
- * @author Bruno Kirschner
  */
 public class Sphere extends AbstractShape{
 
-    // Mittelpunkt der Kugel
+    /**
+     * #################################
+     *            Attribute
+     * #################################
+     */
+    
+    /**
+     * Der Mittelpunkt der Kugel.
+     */
     private Vector middle;
     
-    // Radius der Kugel
+    /**
+     * Der Radius der Kugel.
+     */
     private float radius;
     
+    /**
+     * #################################
+     *          Konstruktoren
+     * #################################
+     */
+    
+    /**
+     * Erzeugt eine schwarze Kugel aus dem Mittelpunkt und dem Radius.
+     * 
+     * @param middle Mittelpunkt der Kugel
+     * 
+     * @param radius Radius der Kugel
+     */
     public Sphere(final Vector middle, final float radius){
         this.middle = middle;
         this.radius = radius;
         
         super.setMaterial(new Material(new Color(0f, 0f, 0f)));
     }
+    
+    /**
+     * #################################
+     *       öffentliche Methoden
+     * #################################
+     */
 
     /**
      * Getter für den Mittelpunkt der Kugel.
@@ -40,7 +67,7 @@ public class Sphere extends AbstractShape{
      * 
      * @param middle der neue Mittelpunkt der Kugel
      */
-    public void setMiddle(Vector middle) {
+    public void setMiddle(final Vector middle) {
         this.middle = middle;
     }
 
@@ -62,8 +89,14 @@ public class Sphere extends AbstractShape{
         this.radius = radius;
     }
     
+    /**
+     * #################################
+     *        überschriebene Methoden
+     * #################################
+     */
+    
     @Override
-    public Hit getNearestIntersectionWith(Ray ray) {
+    public Hit getNearestIntersectionWith(final Ray ray) {
         
         double a,b,c;
         double diskriminante;
@@ -108,26 +141,28 @@ public class Sphere extends AbstractShape{
         
         diskriminante = Math.pow(b,2)-4*a*c;
         
+        Hit hit = null;
+        
         if(diskriminante >= 0){
             
             float t1 =(float) ((-b + Math.sqrt(diskriminante)) / 2*a);
             
-            Hit hit1 = new Hit(ray,this,t1);
-            
             if(diskriminante > 0){
                 float t2 =(float) ((-b - Math.sqrt(diskriminante)) / 2*a);
                 
-                Hit hit2 = new Hit(ray,this,t2);
-                if(t1 < t2){
-                    return hit2;
-                } else {
-                    return hit1;
-                }
+                hit = t1 > 0 && t2 > 0
+                        ? (t1 < t2
+                            ? new Hit(ray,this,t1) : new Hit(ray,this,t2))
+                        : t1 > 0
+                            ? new Hit(ray,this,t1) : (t2 > 0
+                                ? new Hit(ray,this,t2) : null);
+                
+                
             } else {
-                return hit1;
+                hit = t1 > 0 ? new Hit(ray,this,t1) : null;
             }
         }
         
-        return null;
+        return hit;
     }
 }

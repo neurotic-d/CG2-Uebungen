@@ -4,27 +4,32 @@ import raytracer.Ray;
 import vecmath.Vector;
 
 /**
- * Interface für die Kameras des Raytracer
- * 
- * @author Bruno Kirschner <bruno.kirschner@online.de>
+ * Schnittstelle für eine Kamera des Raytracer
  */
 public interface ICamera {
+    
     /**
-     * Gibt den Vektor für Richtung in die die Kamera schaut wieder.
+     * #################################
+     *        öffentliche Methoden
+     * #################################
+     */
+    
+    /**
+     * Gibt die Blickrichtung der Kamera wieder.
      * 
-     * @return die Kamera-Blickrichtung
+     * @return die Blickrichtung
      */
     public Vector getViewDirection();
    
     /**
-     * Gibt den Vektor an der für die Kamera oben it.
+     * Gibt den Vektor wieder der für die Kamera oben darstellt.
      * 
-     * @return der Vektor nach oben
+     * @return der Vektor für Oben
      */
     public Vector getUpVector();
     
     /**
-     * Gibt den Vektor für die Kameraposition wieder.
+     * Gibt die Kameraposition wieder.
      * 
      * @return die Kameraposition
      */
@@ -38,13 +43,14 @@ public interface ICamera {
     public float getOpeningAngel();
     
     /**
-     * Generiert einen Strahl
+     * Generiert einen Strahl von der Kamera zum angegebenen Punkt auf der Bildebene
      * 
-     * @param x
-     * @param y
-     * @param resolutionX
-     * @param resolutionY
-     * @return 
+     * @param x der X-Wert des Punktes auf der Bildebene
+     * @param y der Y-Wert des Punktes auf der Bildebene
+     * @param resolutionX   die Breite der Bildebene
+     * @param resolutionY   die Höhe der Bildebene
+     * 
+     * @return der generierte Strahl
      */
     public Ray generateRay(final int x, final int y, final int resolutionX, final int resolutionY);
 }

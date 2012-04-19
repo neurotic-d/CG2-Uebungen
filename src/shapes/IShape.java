@@ -4,6 +4,9 @@ import raytracer.Ray;
 import material.Material;
 import raytracer.Hit;
 
+/**
+ * Schnittstelle für die Formen im Raytracer.
+ */
 public interface IShape {
     
     /**
@@ -11,7 +14,7 @@ public interface IShape {
      * 
      * @param ray   Der Strahl, welcher die Form eventuell schneidet.
      * 
-     * @return  die Schnittpunkte falls sie existieren
+     * @return  der vorderste Schnittpunkt falls dieser existiert
      */
     public Hit getNearestIntersectionWith(final Ray ray);
     

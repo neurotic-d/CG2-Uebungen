@@ -8,19 +8,37 @@ import vecmath.Vector;
 
 /**
  * Definiert eine Ebene im Raum.
- * 
- * @author Bruno Kirschner
  */
 public class Plane extends AbstractShape{
 
+    /**
+     * #################################
+     *            Attribute
+     * #################################
+     */
+    
+    /**
+     * Ein beliebiger Punkt auf der Ebene.
+     */
     private Vector pointOnPlane;
+    
+    /**
+     * Die Normale der Ebene.
+     */
     private Vector normalVector;
     
     /**
-     * Initialisiert eine Ebene mit Hilfe eines Punktes und einem normalen-Vektor.
+     * #################################
+     *           Konstruktoren
+     * #################################
+     */
+    
+    /**
+     * Initialisiert eine schwarze Ebene mit Hilfe eines Punktes und einer Normalen.
      * 
-     * @param pointOnPlane der Punkt auf der Ebene
-     * @param normalVector der normalen-Vektor
+     * @param pointOnPlane Punkt auf der Ebene
+     * 
+     * @param normalVector die Normale
      */
     public Plane(final Vector pointOnPlane, final Vector normalVector){
         this.pointOnPlane = pointOnPlane;
@@ -30,11 +48,13 @@ public class Plane extends AbstractShape{
     }
     
     /**
-     * Initialisiert eine Ebene mit Hilfe  eines Punktes und den beiden Richtungen in
+     * Initialisiert eine schwarze Ebene mit Hilfe  eines beliebigen Punktes und den beiden Richtungen in
      * dennen sie sich ausbreitet.
      * 
-     * @param pointOnPlane  der Punkt auf der Ebene
-     * @param direction1    die erte Richtung
+     * @param pointOnPlane  Punkt auf der Ebene
+     * 
+     * @param direction1    die erste Richtung
+     * 
      * @param direction2    die zweite Richtung
      */
     public Plane(final Vector pointOnPlane, final Vector direction1, final Vector direction2){
@@ -44,6 +64,12 @@ public class Plane extends AbstractShape{
         super.setMaterial(new Material(new Color(0f, 0f, 0f)));
     }
 
+    /**
+     * #################################
+     *       öffentliche Methoden
+     * #################################
+     */
+    
     /**
      * Getter für den normalen-Vektor.
      * 
@@ -58,7 +84,7 @@ public class Plane extends AbstractShape{
      * 
      * @param normalVector die neue Normale der Ebene
      */
-    public void setNormalVector(Vector normalVector) {
+    public void setNormalVector(final Vector normalVector) {
         this.normalVector = normalVector;
     }
 
@@ -76,13 +102,18 @@ public class Plane extends AbstractShape{
      * 
      * @param pointOnPlane der neue Punkt auf der Ebene
      */
-    public void setPointOnPlane(Vector pointOnPlane) {
+    public void setPointOnPlane(final Vector pointOnPlane) {
         this.pointOnPlane = pointOnPlane;
     }
     
+    /**
+     * #################################
+     *     überschriebene Methoden
+     * #################################
+     */
     
     @Override
-    public Hit getNearestIntersectionWith(Ray ray) {        
+    public Hit getNearestIntersectionWith(final Ray ray) {        
         /**
          * Strahl: x(t) = x0 + t*v
          * 

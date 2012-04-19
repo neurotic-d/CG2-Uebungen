@@ -4,30 +4,65 @@ import raytracer.Ray;
 import vecmath.Vector;
 
 /**
- * Die Kameraklasse für den Raytracer.
- * 
- * @author Bruno Kirschner
+ * Kameraklasse für den Raytracer.
  */
 public class Camera implements ICamera{
     
-    // Blickrichtung
+    /**
+     * #################################
+     *            Attribute
+     * #################################
+     */
+    
+    /**
+     * Blickrichtung
+     */
     private Vector viewDirection;
     
-    // Vektor für oben
+    /**
+     * Vektor der Oben darstellt
+     */
     private Vector upVector;
     
-    // Kameraposition
+    /**
+     * Kameraposition
+     */
     private Vector cameraPosition;
     
-    // Öfnungswinkel der Kamera
+    /**
+     * Öffnungswinkel
+     */
     private float openingAngel;
     
+    /**
+     * #################################
+     *            Konstruktoren
+     * #################################
+     */
+    
+    /**
+     * Konstruktor für die Kamera des Raytracer
+     * 
+     * @param position  die Kameraposition
+     * 
+     * @param view  die Kamera-Blickrichtung
+     * 
+     * @param up    die Richtung die für die Kamera obene darstellt
+     * 
+     * @param angel der Öffnungswinkel
+     */
     public Camera(final Vector position, final Vector view, final Vector up, final float angel){
         this.cameraPosition = position;
         this.viewDirection = view;
         this.upVector = up;
         this.openingAngel = angel;
     }
+
+    /**
+     * #################################
+     *     Überschriebene Methoden
+     * #################################
+     */
     
     @Override
     public Vector getViewDirection() {
@@ -49,46 +84,38 @@ public class Camera implements ICamera{
         return this.openingAngel;
     }
 
-    
-    /**
-     * 
-     * @param x
-     * @param y
-     * @param resolutionX
-     * @param resolutionY
-     * @return 
-     */
     @Override
-    public Ray generateRay(int x, int y, int resolutionX, int resolutionY) {
+    public Ray generateRay(final int x, final int y, final int resolutionX, final int resolutionY) {
+        
         /**
          *      b
-            ---------|
-            \       n|
-             \       |
-              \      |
-             c \     |a
-                \    |
-                 \   |
-                  \ x|
-                   \ |
-                    \|
-
-
-            bekannt Seite b, Winkel x, Winkel n
-            gesucht a
-
-            tan(x) = b / a 
-
-            a = b / tan(x)
+         *   ---------|
+         *   \       n|
+         *    \       |
+         *     \      |
+         *    c \     |a
+         *       \    |
+         *        \   |
+         *         \ x|
+         *          \ |
+         *           \|
          * 
          * 
-         * resolutionX = Nx
-         * resolutionY = Ny
+         *  bekannt Seite b, Winkel x, Winkel n
+         *  gesucht a
          * 
-         * Nx : Ny = w : h
-         * w = Nx * h : Ny
-         * w * Ny = Nx * h
-         * w * Ny : Nx = h
+         *  tan(x) = b / a 
+         * 
+         *  a = b / tan(x)
+         * 
+         * 
+         *  resolutionX = Nx
+         *  resolutionY = Ny
+         * 
+         *  Nx : Ny = w : h
+         *  w = Nx * h : Ny
+         *  w * Ny = Nx * h
+         *  w * Ny : Nx = h
          **/
         
         int w = 10;
@@ -96,7 +123,7 @@ public class Camera implements ICamera{
         
         float z = w / (2f * (float)Math.tan(this.openingAngel/2f)); 
         
-        float posX = -w/2f + (x + 0.5f) * (1.0f*w/resolutionX);;
+        float posX = -w/2f + (x + 0.5f) * (1.0f*w/resolutionX);
         float posY = -h/2f + (y + 0.5f) * (1.0f*h/resolutionY);
         Vector posPixel = new Vector(posX, posY, -z);
         

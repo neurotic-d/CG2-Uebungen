@@ -8,18 +8,39 @@ import vecmath.Color;
 import vecmath.Vector;
 
 /**
- * Repräsentiert eine Axis Aligned Bounding Box
- * 
- * @author Bruno Kirschner
+ * Repräsentiert eine an den Achsen ausgerichtete Box dar.
  */
 public class AxisAlignedBox extends AbstractShape{
 
-    // Der Punkt mit den kleinsten Werten auf allen 3 Achsen.
+    /**
+     * #################################
+     *            Attribute
+     * #################################
+     */
+    
+    /**
+     * Der kleinste Punkt der Box.
+     */
     private Vector pMin;
     
-    // Der Punkt mit den größten Werten auf allen 3 Achsen.
+    /**
+     * Der größste Punkt der Box.
+     */
     private Vector pMax;
     
+    /**
+     * #################################
+     *           Konstruktoren
+     * #################################
+     */
+    
+    /**
+     * Erzeugt eine schwarze Box.
+     * 
+     * @param min   Punkt mit den kleinsten Werten
+     * 
+     * @param max   Punkt mit den größsten Werten
+     */
     public AxisAlignedBox(final Vector min, final Vector max){
         this.pMin = min;
         this.pMax = max;
@@ -27,6 +48,12 @@ public class AxisAlignedBox extends AbstractShape{
         super.setMaterial(new Material(new Color(0,0,0)));
     }
 
+    /**
+     * #################################
+     *      öffentliche Methoden
+     * #################################
+     */
+    
     /**
      * Gibt den Punkt wieder der die maximal Werte repräsentiert.
      * 
@@ -41,7 +68,7 @@ public class AxisAlignedBox extends AbstractShape{
      * 
      * @param pMax der neue Punkt
      */
-    public void setpMax(Vector pMax) {
+    public void setpMax(final Vector pMax) {
         this.pMax = pMax;
     }
 
@@ -63,19 +90,16 @@ public class AxisAlignedBox extends AbstractShape{
         this.pMin = pMin;
     }
     
+    /**
+     * #################################
+     *      überschriebene Methoden
+     * #################################
+     */
+    
     @Override
-    public Hit getNearestIntersectionWith(Ray ray) {
+    public Hit getNearestIntersectionWith(final Ray ray) {
         
         /**
-         * ----------------------------------
-         * --------TODO----------------------
-         * 
-         * Diese normalen Stimmen nur f�r die aktuell vorgegeben Kamera
-         * M�glichkeit f�r allgemeinere Form finden.
-         * 
-         * ----------------------------------
-         * ----------------------------------
-         * 
          * 6 Seiten: P: n * x - d = 0
          * 
          * d = n*x0
@@ -84,7 +108,7 @@ public class AxisAlignedBox extends AbstractShape{
          * finde die 3 Ebenen ,deren Normalen in die Richtung des Ursprungs
          * des Strahls, zeigen.
          * 
-         * => Vorzeichen der Komponenten von ray.direction m�ssen umgedreht werden
+         * => Vorzeichen der Komponenten von ray.direction m�ssen umgedreht werden
          * => Vorzeichen der ray.direction kompontente:
          * => Hinten, Unten, Links == -
          * => Vorne, Oben, Rechts == +

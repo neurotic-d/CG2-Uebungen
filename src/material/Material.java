@@ -3,21 +3,38 @@ package material;
 import vecmath.Color;
 
 /**
- * Klasse aller möglichen Materialien.
- * 
- * @author Bruno Kirschner <bruno.kirschner@online.de>
+ * Material für Oberflächen im Raytracer
  */
 public class Material{
     
-    // Die Farbe des Materials
+    /**
+     * #################################
+     *            Attribute
+     * #################################
+     */
+    
+    /**
+     * Die Farbe des Material
+     */
     private Color color;
     
+    /**
+     * #################################
+     *         öffentliche Methoden
+     * #################################
+     */
+    
+    /**
+     * Erzeugt ein neues Material.
+     * 
+     * @param color die Farbe des Material
+     */
     public Material(final Color color){
         this.color = color;
     }
 
     /**
-     * Gibt die Farbe des Materials an.
+     * Gibt die Farbe des Materials wieder.
      * 
      * @return die Farbe
      */
@@ -26,11 +43,11 @@ public class Material{
     }
 
     /**
-     * Setzt die Farbe des Materials
+     * Setzt die Farbe des Materials neu.
      * 
-     * @param color die neue Farbe für das Material
+     * @param color die neue Farbe
      */
-    public void setColor(Color color) {
+    public void setColor(final Color color) {
         this.color = color;
     }
 }

@@ -3,24 +3,57 @@ package raytracer;
 import shapes.IShape;
 
 /**
- * Stellt einen Schnittpuntk zwischen einem Strahl
- * und einer Form dar.
- * 
- * @author Bruno Kirschner
+ * Stellt einen Treffer eines Strahl und einer Form dar.
  */
 public class Hit {
    
+    /**
+     * #################################
+     *            Attribute
+     * #################################
+     */
+    
+    /**
+     * Der Strahl der die Form getroffen hat.
+     **/
     private Ray ray;
+    
+    /**
+     * Die Form die getroffen wurde.
+     */
     private IShape shape;
     
-    // t für den Punkt wo der Strahl die Form traf
+    /**
+     * Der Faktor t des Strahls am Schnittpunkt.
+     */
     private float factorForHitPoint;
-
+    
+    /**
+     * #################################
+     *         Konstruktoren
+     * #################################
+     */
+    
+    /**
+     * Erzeugt einen Treffer zwischen einem Strahl und einer Form.
+     * 
+     * @param ray   der Strahl
+     * 
+     * @param shape die Form
+     * 
+     * @param factorForHitPoint de Faktor t des Strahls am Treffer
+     */
     public Hit(final Ray ray, final IShape shape,final float factorForHitPoint){
         this.ray = ray;
         this.shape = shape;
         this.factorForHitPoint = factorForHitPoint;
     }
+    
+    /**
+     * #################################
+     *         öffentliche Methoden
+     * #################################
+     */
     
     /**
      * Getter für den dargestellten Faktor t des Strahles für den Treffer.
@@ -36,7 +69,7 @@ public class Hit {
      * 
      * @return der Treffer
      */
-    public void setFactorForHitPoint(float factorForHitPoint) {
+    public void setFactorForHitPoint(final float factorForHitPoint) {
         this.factorForHitPoint = factorForHitPoint;
     }
 

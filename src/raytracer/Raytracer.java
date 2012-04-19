@@ -4,21 +4,51 @@ import camera.ICamera;
 import vecmath.Color;
 
 /**
- *  Raytracer
- *  @author Bruno Kirschner
+ *  der Raytracer
  */
 public class Raytracer implements Painter{
 
+    /**
+     * #################################
+     *            Attribute
+     * #################################
+     */
+    
+    /**
+     * Die Kamera von der das Bild erzeugt werden soll.
+     */
     private ICamera camera;
+    
+    /**
+     * Die Szene, welche dargestellt werden soll.
+     */
     private Scene scene;
     
+    /**
+     * #################################
+     *          Konstruktoren
+     * #################################
+     */
+    
+    /**
+     * Erzeugt einen Raytracer.
+     * 
+     * @param camera    Kamera des Raytracer
+     * @param scene     Szene die dargestellt wird
+     */
     public Raytracer(final ICamera camera, final Scene scene){
         this.camera = camera;
         this.scene = scene;
     }
-            
+
+    /**
+     * #################################
+     *      überschriebene Methoden
+     * #################################
+     */
+    
     @Override
-    public Color pixelColorAt(int x, int y, int resolutionX, int resolutionY) {
+    public Color pixelColorAt(final int x, final int y, final int resolutionX, final int resolutionY) {
         
         Ray currentRay = this.camera.generateRay(x, y, resolutionX, resolutionY);
         

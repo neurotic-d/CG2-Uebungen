@@ -3,28 +3,61 @@ package raytracer;
 import java.util.ArrayList;
 import java.util.List;
 
+import light.Lightsource;
 import shapes.IShape;
+import vecmath.Color;
 
 /**
  * Stellt eine Szene mit ihren Objekten dar.
- * 
- * @author Bruno Kirschner
  */
 public class Scene {
     
-    // Liste der Objekte in der Szene.
+    /**
+     * #################################
+     *            Attribute
+     * #################################
+     */
+    
+    /**
+     * Die Liste der Formen in der Szene.
+     */
     private List<IShape> shapes;
     
+    /**
+     * Die Liste aller Lichtquellen.
+     */
+    private List<Lightsource> lights;
+    
+    /**
+     * Die Farbe des Umgebungslichtes.
+     */
+    private Color ambientLight;
+    
+    /**
+     * #################################
+     *           Konstruktoren
+     * #################################
+     */
+    
+    /**
+     * Erzeugt eine leere Szene.
+     */
     public Scene(){
         this.shapes = new ArrayList<IShape>();
     }
     
     /**
-     * Fügt verschiedene Formen dieser Szene hinzu.
-     * 
-     * @param shapes die Liste der Formen die der Szene hinzugefügt werden sollen.
+     * #################################
+     *        öffentliche Methoden
+     * #################################
      */
-    public void addShapeToScene(IShape... shapes){
+    
+    /**
+     * Fügt Formen zur Szene hinzu.
+     * 
+     * @param shapes Formen, die hinzugefügt werden sollen.
+     */
+    public void addShapeToScene(final IShape... shapes){
         if(shapes == null){
             throw new IllegalArgumentException("Scene: addShapeToScene: shapes ist null");
         }
@@ -35,25 +68,62 @@ public class Scene {
             }
         }
     }
+    
+    /**
+     * Fügt Lichtquellen zur Szene hinzu.
+     * 
+     * @param lights Lichtquellen, die hinzugefügt werden sollen.
+     */
+    public void addLightToScene(final Lightsource... lights){
+        if(lights == null){
+            throw new IllegalArgumentException("Scene: addLightToScene: lights ist null");
+        }
+        
+        for(Lightsource l: lights){
+            if(l != null){
+                this.lights.add(l);
+            }
+        }
+    }
 
     /**
-     * Getter für die Liste der Formen in der Szene wieder.
+     * Gibt für die Liste der Formen in der Szene wieder.
      * 
-     * @return die Liste der Formen.
+     * @return Liste der Formen
      */
     public List<IShape> getShapes() {
         return shapes;
     }
-
+    
     /**
-     * Setzt eine neue Liste an Formen für die Szene.
+     * Gibt die Liste der Lichtquellen in der Szene wieder.
      * 
-     * @param shapes    die neue Liste an Formen
+     * @return Liste der Lichtquellen
      */
-    public void setShapes(List<IShape> shapes) {
-        this.shapes = shapes;
+    public List<Lightsource> getLights(){
+        return this.lights;
     }
     
+    /**
+     * Gibt die Farbe des Umgebungslichts wieder.
+     * 
+     * @return Umgebungslicht
+     */
+    public Color getAmbientLight(){
+        return this.ambientLight;
+    }
+    
+    public void setAmbientLight(final Color ambient){
+        this.ambientLight = ambient;
+    }
+    
+    /**
+     * Gibt den vordersten Treffer des Strahls in der Szene wieder.
+     * 
+     * @param ray   Strahl dessen Treffer geprüft wird
+     * 
+     * @return vorderster Treffer
+     */
     public Hit getNearestIntersectionWith(final Ray ray){
         
         Hit nearestHit = null;
