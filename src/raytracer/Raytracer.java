@@ -55,7 +55,7 @@ public class Raytracer implements Painter{
         Hit sceneHit = this.scene.getNearestIntersectionWith(currentRay);
         
         if(sceneHit != null && sceneHit.getFactorForHitPoint() > 0){
-            return sceneHit.getShape().getMaterial().getColor();
+            return sceneHit.getShape().getMaterial().shade(scene, sceneHit);
         } else {
             return new Color(0f,0f,0f);
         }

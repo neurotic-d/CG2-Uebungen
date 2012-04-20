@@ -177,4 +177,12 @@ public final class Color implements Comparable<Color> {
     return 3;
   }
 
+    /**
+    * Erzeugt eine zufällige Farbe.
+    * 
+    * @return die zufällig generierte Farbe
+    */
+    public static Color randomColor(){
+        return new Color((float)Math.random(), (float)Math.random(), (float)Math.random());
+    }
 }

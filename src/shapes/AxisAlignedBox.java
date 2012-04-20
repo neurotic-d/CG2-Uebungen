@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import material.Material;
 import raytracer.Hit;
 import raytracer.Ray;
-import vecmath.Color;
 import vecmath.Vector;
 
 /**
@@ -29,6 +28,11 @@ public class AxisAlignedBox extends AbstractShape{
     private Vector pMax;
     
     /**
+     * Liste der Ebenen die die Box darstellt
+     */
+    ArrayList<Plane> sites;
+    
+    /**
      * #################################
      *           Konstruktoren
      * #################################
@@ -45,7 +49,44 @@ public class AxisAlignedBox extends AbstractShape{
         this.pMin = min;
         this.pMax = max;
         
-        super.setMaterial(new Material(new Color(0,0,0)));
+        super.setMaterial(new Material());
+       
+        /**
+         * 6 Seiten: P: n * x - d = 0
+         * 
+         * d = n*x0
+         * 
+         * Algorithmus (Woo):
+         * finde die 3 Ebenen ,deren Normalen in die Richtung des Ursprungs
+         * des Strahls, zeigen.
+         * 
+         * => Vorzeichen der Komponenten von ray.direction m�ssen umgedreht werden
+         * => Vorzeichen der ray.direction kompontente:
+         * => Hinten, Unten, Links == -
+         * => Vorne, Oben, Rechts == +
+         * 
+         * (Achtung Vorne/Hinten sind bei der Sicht nach negativ Z getauscht)
+         * (d.h. die ebene die am weitesten entfernt ist ist vorne)
+         * 
+         * Parallel zur X-Achse: Vorne/Hinten
+         * Parallel zur Y-Achse: Links/Rechts
+         * Parallel zur Z-Achse: Oben/Unten
+         * 
+         *          * 
+         * Vorne: {0,0,1} * x - {0,0,1}*x0 = 0
+         * Hinten: {0,0,-1} * x - {0,0,-1}*x0 = 0
+         * Links: {-1,0,0} * x - {-1,0,0}*x0 = 0
+         * Rechts: {1,0,0} * x - {1,0,0}*x0 = 0
+         * Oben: {0,1,0} * x - {0,1,0}*x0 = 0
+         * Unten: {0,-1,0} * x - {0,-1,0}*x0 = 0
+         **/
+        this.sites = new ArrayList<Plane>();
+        sites.add(new Plane(this.pMin, new Vector(0,0,-1)));
+        sites.add(new Plane(this.pMax, new Vector(0,0,1)));
+        sites.add(new Plane(this.pMin, new Vector(-1,0,0)));
+        sites.add(new Plane(this.pMax, new Vector(1,0,0)));
+        sites.add(new Plane(this.pMin, new Vector(0,-1,0)));
+        sites.add(new Plane(this.pMax, new Vector(0,1,0)));
     }
 
     /**
@@ -96,54 +137,28 @@ public class AxisAlignedBox extends AbstractShape{
      * #################################
      */
     
+    /**
+     * Der Fall, dass die Box um die Kamera gelegt ist wird nicht betrachtet
+     **/
     @Override
     public Hit getNearestIntersectionWith(final Ray ray) {
         
-        /**
-         * 6 Seiten: P: n * x - d = 0
-         * 
-         * d = n*x0
-         * 
-         * Algorithmus (Woo):
-         * finde die 3 Ebenen ,deren Normalen in die Richtung des Ursprungs
-         * des Strahls, zeigen.
-         * 
-         * => Vorzeichen der Komponenten von ray.direction m�ssen umgedreht werden
-         * => Vorzeichen der ray.direction kompontente:
-         * => Hinten, Unten, Links == -
-         * => Vorne, Oben, Rechts == +
-         * 
-         * (Achtung Vorne/Hinten sind bei der Sicht nach negativ Z getauscht)
-         * (d.h. die ebene die am weitesten entfernt ist ist vorne)
-         * 
-         * Parallel zur X-Achse: Vorne/Hinten
-         * Parallel zur Y-Achse: Links/Rechts
-         * Parallel zur Z-Achse: Oben/Unten
-         * 
-         * Vorne: {0,0,1} * x - {0,0,1}*x0 = 0
-         * Hinten: {0,0,-1} * x - {0,0,-1}*x0 = 0
-         * Links: {-1,0,0} * x - {-1,0,0}*x0 = 0
-         * Rechts: {1,0,0} * x - {1,0,0}*x0 = 0
-         * Oben: {0,1,0} * x - {0,1,0}*x0 = 0
-         * Unten: {0,-1,0} * x - {0,-1,0}*x0 = 0
-         **/
-        
         Hit shapeHit = null;
-        
-        Plane parallelX, parallelY, parallelZ;
         Vector rayDirection = ray.getNormalizedDirection();
-        
-        parallelX = rayDirection.z > 0 ? new Plane(this.pMin, new Vector(0,0,-1)) : new Plane(this.pMax, new Vector(0,0,1));
-        parallelY = rayDirection.x > 0 ? new Plane(this.pMin, new Vector(-1,0,0)) : new Plane(this.pMax, new Vector(1,0,0));
-        parallelZ = rayDirection.y > 0 ? new Plane(this.pMin, new Vector(0,-1,0)) : new Plane(this.pMax, new Vector(0,1,0));
         
         ArrayList<Hit> hits = new ArrayList<Hit>();
         
-        hits.add(parallelX.getNearestIntersectionWith(ray));
-        hits.add(parallelY.getNearestIntersectionWith(ray));
-        hits.add(parallelZ.getNearestIntersectionWith(ray));
+        for(Plane p: this.sites){
+            Hit tmp = p.getNearestIntersectionWith(ray);
+            
+            hits.add(tmp);
+        }
         
         for(Hit h: hits){
+            if(h == null){
+                continue;
+            }
+            
             Vector hitPoint = ray.getPointAt(h.getFactorForHitPoint());
             
             if(hitPoint.x >= this.pMin.x && hitPoint.y >= this.pMin.y && hitPoint.z >= this.pMin.z &&
@@ -163,5 +178,5 @@ public class AxisAlignedBox extends AbstractShape{
         }
         
         return shapeHit;
-    }    
+    } 
 }

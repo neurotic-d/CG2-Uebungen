@@ -3,7 +3,6 @@ package shapes;
 import material.Material;
 import raytracer.Hit;
 import raytracer.Ray;
-import vecmath.Color;
 import vecmath.Vector;
 
 /**
@@ -44,7 +43,7 @@ public class Sphere extends AbstractShape{
         this.middle = middle;
         this.radius = radius;
         
-        super.setMaterial(new Material(new Color(0f, 0f, 0f)));
+        super.setMaterial(new Material());
     }
     
     /**
@@ -136,31 +135,38 @@ public class Sphere extends AbstractShape{
          */
         
         a = ray.getNormalizedDirection().dot(ray.getNormalizedDirection());
-        b = 2* ((ray.getOrigin().sub(this.middle).dot(ray.getNormalizedDirection())));
-        c = (this.middle.sub(ray.getOrigin()).dot(this.middle.sub(ray.getOrigin()))) - Math.pow(this.radius, 2);
+        b = 2f * ((ray.getOrigin().sub(this.middle).dot(ray.getNormalizedDirection())));
+        c = (this.middle.sub(ray.getOrigin()).dot(this.middle.sub(ray.getOrigin()))) - Math.pow(this.radius, 2f);
         
-        diskriminante = Math.pow(b,2)-4*a*c;
+        diskriminante = Math.pow(b,2f)-4f*a*c;
         
         Hit hit = null;
         
         if(diskriminante >= 0){
             
-            float t1 =(float) ((-b + Math.sqrt(diskriminante)) / 2*a);
+            float t1 =(float) ((-b + Math.sqrt(diskriminante)) / 2f*a);
             
             if(diskriminante > 0){
-                float t2 =(float) ((-b - Math.sqrt(diskriminante)) / 2*a);
+                float t2 =(float) ((-b - Math.sqrt(diskriminante)) / 2f*a);
                 
                 hit = t1 > 0 && t2 > 0
                         ? (t1 < t2
-                            ? new Hit(ray,this,t1) : new Hit(ray,this,t2))
+                            ? new Hit(ray,this,t1,null) : new Hit(ray,this,t2,null))
                         : t1 > 0
-                            ? new Hit(ray,this,t1) : (t2 > 0
-                                ? new Hit(ray,this,t2) : null);
+                            ? new Hit(ray,this,t1, null) : (t2 > 0
+                                ? new Hit(ray,this,t2, null) : null);
                 
                 
             } else {
-                hit = t1 > 0 ? new Hit(ray,this,t1) : null;
+                hit = t1 > 0 ? new Hit(ray,this,t1, null) : null;
             }
+        }
+        
+        if(hit != null){
+            Vector hitpoint = ray.getPointAt(hit.getFactorForHitPoint());
+            Vector normalVector = hitpoint.sub(this.middle).normalize(); 
+            
+            hit.setHitpointNormal(normalVector);
         }
         
         return hit;

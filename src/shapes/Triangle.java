@@ -3,7 +3,6 @@ package shapes;
 import material.Material;
 import raytracer.Hit;
 import raytracer.Ray;
-import vecmath.Color;
 import vecmath.Vector;
 
 /**
@@ -52,7 +51,7 @@ public class Triangle extends AbstractShape {
         this.p2 = p2;
         this.p3 = p3;
         
-        super.setMaterial(new Material(new Color(0f, 0f, 0f)));
+        super.setMaterial(new Material());
     }
     
     /**
@@ -167,7 +166,7 @@ public class Triangle extends AbstractShape {
                 double gamma = (s.sub(a).dot(c) * b.dot(b) - (b.dot(c)) * ((s.sub(a)).dot(b))) / (b.cross(c).dot(b.cross(c)));
 
                 if(beta >= 0 && gamma >= 0 && beta+gamma <= 1){
-                    trianglePlaneHit = new Hit(ray,this,trianglePlaneHit.getFactorForHitPoint());
+                    trianglePlaneHit = new Hit(ray,this,trianglePlaneHit.getFactorForHitPoint(), n);
                 } else {
                     trianglePlaneHit = null;
                 }
@@ -179,5 +178,4 @@ public class Triangle extends AbstractShape {
                
         return trianglePlaneHit;
 	}
-
 }

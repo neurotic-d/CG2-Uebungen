@@ -3,7 +3,6 @@ package shapes;
 import material.Material;
 import raytracer.Ray;
 import raytracer.Hit;
-import vecmath.Color;
 import vecmath.Vector;
 
 /**
@@ -44,7 +43,7 @@ public class Plane extends AbstractShape{
         this.pointOnPlane = pointOnPlane;
         this.normalVector = normalVector.normalize();
         
-        super.setMaterial(new Material(new Color(0f,0f,0f)));
+        super.setMaterial(new Material());
     }
     
     /**
@@ -61,7 +60,7 @@ public class Plane extends AbstractShape{
         this.pointOnPlane = pointOnPlane;
         this.normalVector = direction1.cross(direction2);
         
-        super.setMaterial(new Material(new Color(0f, 0f, 0f)));
+        super.setMaterial(new Material());
     }
 
     /**
@@ -137,7 +136,7 @@ public class Plane extends AbstractShape{
             float d = this.normalVector.dot(this.pointOnPlane);
             
             float hitFactor = (d - ray.getOrigin().dot(this.normalVector)) / this.normalVector.dot(ray.getDirection().normalize());
-            hit = new Hit(ray,this,hitFactor);
+            hit = new Hit(ray,this,hitFactor, this.normalVector);
         }
         
         return hit;

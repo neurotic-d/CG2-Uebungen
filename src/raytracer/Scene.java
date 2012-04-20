@@ -44,6 +44,9 @@ public class Scene {
      */
     public Scene(){
         this.shapes = new ArrayList<IShape>();
+        this.lights = new ArrayList<Lightsource>();
+        
+        this.ambientLight = new Color(0f, 0f, 0f);
     }
     
     /**
@@ -131,10 +134,10 @@ public class Scene {
         for(IShape s : this.shapes){
             Hit currentHit = s.getNearestIntersectionWith(ray);
             
-            if(nearestHit == null && currentHit != null && currentHit.getFactorForHitPoint() > 0){
+            if(nearestHit == null && currentHit != null && currentHit.getFactorForHitPoint() > 0f){
                 nearestHit = currentHit;
             }
-            else if(currentHit != null && currentHit.getFactorForHitPoint() > 0 && currentHit.getFactorForHitPoint() < nearestHit.getFactorForHitPoint()){
+            else if(currentHit != null && currentHit.getFactorForHitPoint() > 0f && currentHit.getFactorForHitPoint() < nearestHit.getFactorForHitPoint()){
                 
                 nearestHit = currentHit;
             }

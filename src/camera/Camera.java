@@ -51,10 +51,12 @@ public class Camera implements ICamera{
      * 
      * @param angel der Öffnungswinkel
      */
-    public Camera(final Vector position, final Vector view, final Vector up, final float angel){
+    public Camera(final Vector position,final float angel){
         this.cameraPosition = position;
-        this.viewDirection = view;
-        this.upVector = up;
+        
+        this.viewDirection = new Vector(0,0,-1);
+        this.upVector = new Vector(0,1,0);
+        
         this.openingAngel = angel;
     }
 
